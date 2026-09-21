@@ -29,10 +29,11 @@ source .venv/bin/activate          # Windows: .venv\Scripts\activate
 ### 2. Install the packages
 
 ```bash
-pip install anthropic python-dotenv jupyter mcp
+pip install "anthropic<1" python-dotenv jupyter mcp
 ```
 
 Versions used in the recordings: `anthropic` 0.111.0, `python-dotenv` 1.2.2, `mcp` 1.28.1.
+The `anthropic<1` pin is deliberate - see [Known issue: `temperature`](#known-issue-temperature) below.
 
 Only `anthropic` and `python-dotenv` are needed for notebooks 01–10 and 12–13. `mcp` is
 needed by notebook 11 and by `shopassist_mcp_server.py`, which import
@@ -63,7 +64,7 @@ the kernel.
 Work through the notebooks in numerical order and run the cells top to bottom - later cells
 depend on variables defined by earlier ones.
 
-**One gotcha:** the `%pip install anthropic python-dotenv` line lives only in the first cell
+**One gotcha:** the `%pip install "anthropic<1" python-dotenv` line lives only in the first cell
 of `01_first_request.ipynb`, because the later notebooks assume the packages are already
 installed. If you start from a later notebook in a fresh environment and hit
 `ModuleNotFoundError: No module named 'anthropic'`, run that install line once and carry on.
@@ -99,6 +100,33 @@ python shopassist_mcp_server.py
 
 It prints nothing on its own: it speaks the MCP protocol over stdin/stdout and is meant to be
 driven by an MCP client, not read in a terminal.
+
+## Known issue: `temperature`
+
+Students started reporting in late August 2026 that `03_temperature.ipynb` fails with
+
+```
+TypeError: Messages.create() got an unexpected keyword argument 'temperature'
+```
+
+**Cause.** `anthropic` 1.0.0 (released 20 August 2026) removed `temperature`, `top_p` and
+`top_k` from `client.messages.create()`. The error is raised by the SDK before any request is
+sent. Independently, Claude Sonnet 5, Opus 4.7 and newer reject the parameter at the API level
+(HTTP 400), so the setting is being retired on both sides.
+
+**What changed in this repository.**
+
+- Notebook 01 and the install command above pin the SDK: `pip install "anthropic<1"`. With that
+  pin and `model = "claude-sonnet-4-6"` every notebook runs as recorded.
+- `temperature=0` was removed from notebooks 04, 05 and 07, where it was only a habit and
+  taught nothing. Those notebooks now run on any SDK version.
+- Notebook 03 keeps `temperature=0`, because that lesson is about the parameter, and opens with
+  a note explaining the situation. On the 1.x SDK the only way to still send it is
+  `extra_body={"temperature": 0}`.
+
+**If you already installed the latest SDK**, either re-run the pinned install line and restart
+the kernel, or simply delete the `temperature=0` line. The videos show the parameter in a few
+places; the affected lectures carry an on-screen note at those moments.
 
 ## Model
 
