@@ -87,6 +87,14 @@ installed. If you start from a later notebook in a fresh environment and hit
 | `12_agents_hub.ipynb` | Multi-agent design - a coordinator plus billing / order / policy subagents with `allowedTools` |
 | `13_shopassist_agents.ipynb` | The full case: one loop with an accumulating `case_facts` dict, driving a damaged-item and duplicate-charge refund end to end |
 
+## Labs
+
+The [`labs/`](labs/) folder holds the hands-on labs that accompany the lectures, the same
+ones that run inside Udemy. They need **no API key**: each lab ships with a small offline
+simulator of the SDK, so you can practise the exact code from the lessons anywhere. Open a
+lab's `notebook.ipynb`, fill in the blanks, and run the `check(...)` calls. See
+[`labs/README.md`](labs/README.md).
+
 ## The MCP server
 
 `shopassist_mcp_server.py` is the one part of the course that is a plain script rather than a
