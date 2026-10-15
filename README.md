@@ -1,3 +1,5 @@
+> **This repository is outdated.** The current code, including the Python chat server (`shopassist/app.py`), the agents and the labs, is in **[termidy/CCAR-F-practice](https://github.com/termidy/CCAR-F-practice)**. Please use that repository.
+
 # ShopAssist AI
 
 A hands-on course that builds **ShopAssist AI** - a fictional e-commerce customer-support
